@@ -1,1 +1,159 @@
 @import "tailwindcss";
+
+@theme {
+  --font-display: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-bg: #0b0f16;
+  --color-bg-deep: #070a10;
+  --color-panel: #101726;
+  --color-panel-2: #141d31;
+  --color-panel-3: #182238;
+  --color-line: #24304d;
+  --color-line-soft: #1a2440;
+  --color-ink: #e9eef8;
+  --color-mut: #96a2bc;
+  --color-dim: #5e6b88;
+
+  --color-coral: #ff5a4e;
+  --color-coral-soft: #ff8a80;
+  --color-cy: #4fd6e0;
+  --color-amb: #ffb454;
+  --color-ok: #46d48f;
+  --color-lilac: #9db2ff;
+  --color-lime: #c9e356;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(255, 90, 78, 0.35);
+  color: #fff5f4;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a3a60 transparent;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #2a3a60; border-radius: 8px; border: 2px solid var(--color-bg); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- layered ambient background ---------- */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(150, 162, 188, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(150, 162, 188, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 78%);
+}
+
+.noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.05;
+}
+
+.glow-coral {
+  background: radial-gradient(circle, rgba(255, 90, 78, 0.14) 0%, transparent 65%);
+}
+.glow-cy {
+  background: radial-gradient(circle, rgba(79, 214, 224, 0.10) 0%, transparent 65%);
+}
+
+/* ---------- reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.rev-on {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- terminal ---------- */
+@keyframes blinkc {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.cursor-blink { animation: blinkc 1s steps(1) infinite; }
+
+.term-scan::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, rgba(79, 214, 224, 0.045) 48%, transparent 55%);
+  background-size: 100% 240px;
+  animation: scandrift 5.5s linear infinite;
+}
+@keyframes scandrift {
+  0% { background-position: 0 -240px; }
+  100% { background-position: 0 240px; }
+}
+
+.term-lines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(7, 10, 16, 0.16) 0 1px, transparent 1px 3px);
+}
+
+/* ---------- diagram flow ---------- */
+@keyframes dashflow {
+  to { stroke-dashoffset: -30; }
+}
+.flow-line {
+  stroke-dasharray: 5 9;
+  animation: dashflow 1.1s linear infinite;
+}
+.flow-line-slow {
+  stroke-dasharray: 4 10;
+  animation: dashflow 1.8s linear infinite;
+}
+
+/* ---------- status pulse ---------- */
+@keyframes pingdot {
+  0% { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+.dot-ping { animation: pingdot 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+/* ---------- marquee of clients ---------- */
+@keyframes tickup {
+  0%, 24% { transform: translateY(0); }
+  33%, 57% { transform: translateY(-50%); }
+  66%, 90% { transform: translateY(-100%); }
+  100% { transform: translateY(0); }
+}
+
+/* ---------- misc ---------- */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadein 0.35s ease-out both; }
+
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.3s ease;
+}
+.link-underline:hover { background-size: 100% 1px; }
+
+button { cursor: pointer; }
